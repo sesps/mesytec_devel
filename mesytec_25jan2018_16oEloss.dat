@@ -1,0 +1,14 @@
+gains 14 14 14 14 8 8 8 8 4 4 4 4 9 9 9 9 9
+shapes 1 1 1 1 2 2 2 2 1 1 1 1 1 1 1 1 1
+thresholds 22 22 34 8 21 21 21 21 21 21 21 21 21 21 21 21 21
+pzs 11 11 11 20 11 11 11 19 11 11 11 11 11 11 11 11 11
+blractive 0
+blrthreshold 8
+tfint 0
+ecldelay 0
+coinctime 128
+multlow 4
+multhigh 4
+monitor 4
+singlemode 1
+rc 1

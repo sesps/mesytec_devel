@@ -1,0 +1,92 @@
+#serial I/O with line oriented device
+
+namespace eval serialusb {
+
+    variable timeError 0
+    variable devices {}
+    variable usbpaths {}
+
+}
+
+proc serialusb::send { chan command } {
+    puts $chan $command
+    return 
+}
+
+
+proc serialusb::receive {chan endstring {timeout 10} } {
+
+    variable timeError
+
+    set lastResults ""
+
+    set polltimer [expr $timeout/10]
+#poll for early end...
+    for {set i 0} {$i<10} {incr i} {
+	if { [ eof $chan ] } { 
+	    catch { close $chan }
+	    return "End of file encountered."
+	}
+	append lastResults [read $chan]
+	if { [regexp $endstring $lastResults] } { break }
+	after $polltimer
+    }
+#Not necessarily an error, but set flag for a timeout without
+#seeing the expected termination string
+    if { $i == 10 } {
+	set timeError 1
+    } else {
+	set timeError 0
+    }
+
+    return $lastResults
+
+}
+
+
+##proc serialusb::connect { {port "/dev/ttyUSB0"} {mode  "115200,n,8,1"} } {
+proc serialusb::connect { {port "/dev/ttyUSB0"} {mode "9600,n,8,1"} } {
+    set chan [open $port r+]
+    fconfigure $chan -mode $mode -translation crlf  -buffering line -blocking 0
+
+
+    return $chan
+
+}
+
+#create a list of all the usb devices which MAY be mesytec modules
+#(the serial interface chip is common, and there is not a way to distinguish
+# a mesytec module from any other device).
+#
+#use an exec to find to get a list of all the symbolic links created by
+#udev for the ttyUSB devices.  Exclude the symbolic links for 
+#the tty devices that they use
+proc serialusb::connectionlist { } {
+
+    variable devices {} 
+    variable usbpaths {}
+    
+    set pathlist [split [exec find /sys/devices -name \*ttyUSB\* | grep -v "/tty/" | sort ] "\n"]
+
+    foreach path $pathlist {
+	set parts [file split $path]
+	set obfuscatedpath [lindex $parts end-1 ] 
+	set devicename "/dev/[lindex $parts end ]"
+	#in the path, the part up to the ":" is bus-port.port.port..."
+	set busports [ split $obfuscatedpath ":" ]
+	set busports [ split [ lindex $busports 0 ] "-." ]
+	set partname "bus"
+	set ourlabel ""
+	foreach port $busports {
+	    set ourlabel "$ourlabel$partname$port"
+	    set partname "port"
+	}
+#	puts "$ourlabel $devicename"
+	lappend devices $devicename
+	lappend usbpaths $ourlabel
+    }
+
+    return $devices
+
+}
+    

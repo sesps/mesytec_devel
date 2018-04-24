@@ -1,0 +1,34 @@
+ds
+MSCF-16 Panel settings:
+gains: 0 0 0 0 c:0
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 c:8
+pz: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 c:0
+shts: 0 0 0 0 c:1
+mult: 4 1
+monitor: 1
+BLR active
+ECL delay: on
+TF int: 1
+common mode
+
+MSCF-16 rc settings:
+gains: 12 12 12 12 c:12
+threshs: 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 c:5
+pz: 111 111 111 111 111 111 111 111 111 111 111 111 111 111 111 111 c:111
+shts: 1 1 1 1 c:1
+mult: 4 4
+monitor: 3
+BLR off
+ECL delay: off
+TF int: 0
+single mode
+
+rc on
+pz disp resolution: 16
+
+MSCF-16 general settings:
+BLR thresh: 25
+Coincidence time: 128
+MSCF-16 software version: 5.2
+MSCF-16 firmware version: 5.0-2
+mscf-RC>

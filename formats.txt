@@ -1,0 +1,191 @@
+#see end for notes on getting 'map'
+------------------------------------------------------------------------------
+MSCF-16 Panel settings:
+gains: 0 0 0 0 c:0
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 c:8
+pz: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 c:0
+shts: 0 0 0 0 c:0
+mult: 4 1
+monitor: 1
+BLR active
+ECL delay: on
+TF int: 2
+common mode
+
+MSCF-16 rc settings:
+gains: 0 0 0 0 c:0
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 c:8
+pz: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 128 c:0
+shts: 0 0 0 0 c:0
+mult: 4 4
+monitor: 1
+BLR active
+ECL delay: on
+TF int: 2
+common mode
+
+rc off
+pz disp resolution: 16
+
+MSCF-16 general settings:
+BLR thresh: 25
+Coincidence time: 3
+MSCF-16 software version: 5.0
+MSCF-16 firmware version: 5.0-2
+mscf>
+-------------------------------------------------------------------------------
+
+I don't have a collection of formats, but here is the one I started from:
+
+-------------------------------------------------------------------------------
+MSCF-16 Panel settings:
+gains: 13 0 0 6 c:6
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 22 80 c:80
+pz: 128 128 128 25 25 25 25 25 25 25 25 25 25 25 25 25 c:25
+shts: 0 0 0 0 c:0
+mult: 2 1
+monitor: 16
+common mode
+
+MSCF-16 rc settings:
+gains: 5 5 4 12 c:15
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 5 128 c:8
+pz: 64 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 c:25
+shts: 0 0 0 1 c:0
+mult: 4 4
+monitor: 1
+common mode
+
+rc on
+
+MSCF-16 general settings:
+BLR thresh: 25
+BLR active
+Coincidence time: 128
+MSCF-16 software version: 4.14
+MSCF-16 firmware version: 4.2-2
+MSCF-16 flash hardware version: 4
+-------------------------------------------------------------------------------
+
+
+For the newest mcfd16...
+
+mcfd16::usb::getall  $mcfdpanel::comhandle
+
+ds
+---------------------------------------------------------------------
+Threshold:     51 51 51 51 15 51 51 51 
+               51 51 51 51 51 51 51 51 - 51
+Gain:          1 1 3 1 1 1 1 3 - 1
+Width [ns]:    51 51 51 51 51 51 51 51 - 51
+Deadtime [ns]: 51 51 51 51 51 51 51 51 - 51
+Delay (Tap):   3 3 2 3 3 3 3 3 - 3
+Fraction [%]:  40 40 40 40 40 40 40 20 - 40
+Polarity:      neg neg pos neg neg neg neg neg - neg
+
+Mask register: chan pairs 15/14...1/0: 00000000 (0)
+Discrimination: Constant fraction
+Gate: leading: 10, trailing: 100
+Global coincidence time: 20 (= 12 ns)
+Operating mode: Individual
+Bandwidth limit: Off
+Remote Control: Off
+Frequency monitor channel: 0
+Test pulser: Off
+Switch settings: BWL: Off, Discr.: Constant fraction
+---------------------------------------------------------------------
+mcfd-16>dt
+---------------------------------------------------------------------
+MCFD-16 trigger settings:
+
+Multiplicity:             from 2 to 16
+Trigger monitor channels: 0: 0, 1: 1
+Ored patterns:            0: 00FF, 1: FF00
+
+Trigger / gate sources:
+        GG  VE  P1  P0  M0  PC  MU  OR
+Trig0:  0   0   0   0   0   0   0   1   
+Trig1:  0   0   0   0   0   0   1   0   
+GG:     0   0   0   0   0   1   0   0   
+
+        GG  VE  P1  P0  M1  PC  MU  OR
+Trig2:  1   0   0   0   0   0   0   0   
+---------------------------------------------------------------------
+mcfd-16>
+
+
+------------------AND from the FIRST 'demo' mcfd16 module------------
+#This module prints out settings in three groups, using 3 separate
+#commands
+
+#ds command (for common settings)
+---------------------verbatim------------
+mcfd-16>ds
+Threshold:     20 20 20 20 20 20 20 20 
+               20 20 20 20 20 20 20 20 - 50
+Gain:          1 1 3 1 3 1 1 1 - 3
+Width [ns]:    29 29 29 29 29 29 29 29 - 29
+Deadtime [ns]: 32 32 32 32 32 32 32 32 - 32
+Delay (Tap):   3 3 3 3 1 3 3 3 - 1
+Fraction [%]:  40 40 40 40 40 40 40 40 - 40
+Polarity:      pos pos pos pos pos pos pos pos - pos
+
+Mask register: chan 15...8: 00000000 (0)
+               chan 7...0:  00000000 (0)
+Discrimination: Constant fraction
+Gate: leading: 10, trailing: 100
+Global coincidence time: 20 (= 13 ns)
+Operating mode: Common
+Bandwidth limit: Off
+Remote Control: Off
+Frequency monitor channel: 0
+Test pulser: Off
+Switch settings: BWL: Off, Discr.: Constant fraction
+mcfd-16>
+---------------------end verbatim------------
+#the dt command gives trigger settings
+---------------------verbatim----------------
+mcfd-16>dt
+MCFD-16 trigger settings:
+
+Multiplicity:             from 2 to 15
+Trigger monitor channels: 0: 0, 1: 1
+Ored patterns:            0: 00FF, 1: FF00
+
+Trigger / gate sources:
+        GG  VE  P1  P0  M0  PC  MU  OR
+Trig0:  0   0   0   0   0   0   0   1   
+Trig1:  0   0   0   0   0   0   1   0   
+GG:     0   0   0   0   0   1   0   0   
+
+        GG  VE  P1  P0  M1  PC  MU  OR
+Trig2:  1   0   0   0   0   0   0   0   
+mcfd-16>
+---------------------end verbatim------------
+mcfd-16>dp
+Pair coincidence settings: 1: 0
+ 2: 0
+ 3: 0
+ 4: 0
+ 5: 0
+ 6: 0
+ 7: 1
+ 8: 3
+ 9: 7
+ 10: 14
+ 11: 28
+ 12: 56
+ 13: 112
+ 14: 224
+ 15: 448
+
+mcfd-16>
+---------------------end verbatim------------
+#Note that the line for "1" does not appear on its on line, and
+#the group has an empty line at the end... 
+
+%  mcfd16::usb::mapdeadtimes $mcfdpanel::comhandle
+25 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 26 27 28 -1 29 31 32 33 34 35 37 38 39 40 42 43 45 46 48 49 51 52 54 56 57 59 60 62 63 65 67 68 70 72 73 75 77 78 80 82 83 85 87 88 90 92 94 95 97 99 101 102 104 106 108 110 112 113 115 117 119 121 123 125 127 129 131 133 135 136 138 141 143 145 147 149 151 153 155 157 159 161 163 166 168 170 172 174 177 179 181 183 186 188 190 193 195 197 200 202 205 207 210 212 215 217 220 222 225 227 230 233 235 238 241 243 246 249 252 255 257 260 263 266 269 272 275 278 281 284 287 290 294 297 300 303 307 310 313 317 320 323 327 331 334 338 341 345 349 353 356 360 364 368 372 376 380 384 389 393 397 401 406 410 415 419 424 429 434 439 444 449 454 459 464 469 475 480 486 492 497 503 509 515 522 528 534 541 548 555 562 569 576 584 591 599 607 615 624 632 641 650 660 669 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+%  mcfd16::usb::mapwidthtimes $mcfdpanel::comhandle
+8 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 9 -1 10 11 -1 12 -1 13 14 -1 15 16 -1 17 18 -1 19 20 -1 21 22 23 -1 24 25 -1 26 27 -1 28 29 30 -1 31 32 33 -1 34 35 36 -1 37 38 39 -1 40 41 42 43 -1 44 45 46 47 -1 48 49 50 51 52 -1 53 54 55 56 57 58 -1 59 60 61 62 63 64 65 66 67 -1 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 89 90 91 92 93 94 95 96 97 99 100 101 102 103 104 106 107 108 109 111 112 113 114 116 117 118 120 121 122 124 125 126 128 129 130 132 133 135 136 138 139 141 142 144 145 147 149 150 152 154 155 157 159 160 162 164 166 167 169 171 173 175 177 179 181 183 185 187 189 191 193 195 198 200 202 204 207 209 212 214 217 219 222 224 227 230 233 235 238 241 244 247 251 254 257 260 264 267 271 275 278 282 286 290 294 299 303 308 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+% 

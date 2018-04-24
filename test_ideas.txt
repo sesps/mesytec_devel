@@ -1,0 +1,20 @@
+There are some tests that are not easy.
+
+From tclsh, source the panel, and then run
+it to to the spot where there is an issue.
+
+To manually run a mesytec command (for usb for example)
+try:
+
+serialusb::send $mscfpanel::handle "ds"
+
+or to get the string of all the settings
+
+mscf16::usb::getall $mscfpanel::comhandle
+
+Or... to test that the "rc on/off" is set:
+
+mcfd16::rcbus::execcmd $mcfdpanel::comhandle "re 0 0 73"
+
+Which doesn't seem to matter whether it is set or not (feb2013)!! :(
+

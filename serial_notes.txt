@@ -1,0 +1,49 @@
+Using the procedures ONLY available in the starting "simple serial" example...
+(Note... the tty being used in /dev/ttyUSB0, and is edited in file)
+This 'simple serial' uses a text widget, and so the data is read into its buffer.
+---
+#Get the current index for the text widget buffer
+set mystart [ $Term(Text) index end ]
+#exec the command
+term_out $chan "ds\r"
+# Note, the device (mesytec MSCF-16) uses carriage return
+set myend [ $Term(Text) index end ]
+# Get the results between the markers
+set myresults [ $Term(Text) get $mystart $myend ]
+# ok ---MYRESULTS------>
+MSCF-16 Panel settings:
+gains: 13 0 0 6 c:6
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 22 80 c:80
+pz: 128 128 128 25 25 25 25 25 25 25 25 25 25 25 25 25 c:25
+shts: 0 0 0 0 c:0
+mult: 2 1
+monitor: 16
+common mode
+
+MSCF-16 rc settings:
+gains: 5 5 4 12 c:15
+threshs: 128 128 128 128 128 128 128 128 128 128 128 128 128 128 5 128 c:8
+pz: 64 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 c:25
+shts: 0 0 0 1 c:0
+mult: 4 4
+monitor: 1
+common mode
+
+rc on
+
+MSCF-16 general settings:
+BLR thresh: 25
+BLR active
+Coincidence time: 128
+MSCF-16 software version: 4.14
+MSCF-16 firmware version: 4.2-2
+MSCF-16 flash hardware version: 4
+>--------END MYRESULTS--------
+#and how to parse this mess? Would it not have been nice had they
+#reserved the colon to separate variable name from values (the c: screws it
+#up).
+
+#trying something like... 
+set mylist [ split [ string map -nocase { c: "" } $myresults ] ":\n" ]
+#this still has garbage in it, but it elminates c: (replaces with null)
+#and the split uses ':' AND '\n'

@@ -1,0 +1,5 @@
+#--ddc jun12
+#Need to override the permissions for ttyUSB devices so they can
+#be written to by users
+#
+KERNEL=="ttyUSB*[0123456879]", GROUP="tty", MODE="0666"
